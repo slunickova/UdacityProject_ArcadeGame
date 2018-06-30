@@ -9,14 +9,21 @@ var Enemy = function(x, y, speed) {
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
     this.sprite = 'images/enemy-bug.png';
+    this.width = 101;
+    this.height = 171;
 };
 
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
 Enemy.prototype.update = function(dt) {
+    this.x += this.speed*dt;
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
+    if (this.x > 600){
+      this.x = -100;
+    };
+
 };
 
 // Draw the enemy on the screen, required method for game
@@ -30,11 +37,31 @@ Enemy.prototype.render = function() {
 var Player = function(x, y) {
     this.x = x;
     this.y = y;
-    this.sprite = "images/char-pink-girl.png";
+    this.sprite = 'images/char-boy.png';
+    this.width = 101;
+    this.height = 171;
 };
 
 Player.prototype.update = function(dt) {
+  if(this.y === -20){
+    this.reset();
+    console.log("You won!");
+  }
+};
 
+Player.prototype.reset = function(x,y) {
+  this.x = 200;
+  this.y = 400;
+}
+
+Player.prototype.checkCollisions = function() {
+    if (this.x < Enemy.x + Enemy.width &&
+      this.x + this.width > Enemy.x &&
+      this.y < Enemy.y + Enemy.height &&
+      this.height + this.y > Enemy.y) {
+        this.reset();
+        console.log("You loose!");
+    }
 };
 
 Player.prototype.render = function() {
@@ -42,17 +69,38 @@ Player.prototype.render = function() {
 };
 
 Player.prototype.handleInput = function() {
-
 };
+
 
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
 
 var allEnemies = [];
-var enemy = new Enemy(10, 10, 10);
-var player = new Player(10, 10);
-allEnemies.push(enemy);
+var enemyOne = new Enemy(-200, 232, 70);
+var enemyTwo = new Enemy(-300, 148, 50);
+var enemyThree = new Enemy(-100, 64, 100);
+var enemyFour = new Enemy(-200, 64, 40);
+var enemyFive = new Enemy(-200, 148, 120);
+var enemySix = new Enemy(-100, 232, 20);
+var player = new Player(200, 400);
+allEnemies.push(enemyOne, enemyTwo, enemyThree, enemyFour, enemyFive, enemySix);
+
+player.handleInput = function(direction){
+  if(direction === "left" && this.x > 0){
+    this.x -= 100;
+  }
+  if(direction === "right" && this.x < 400){
+    this.x += 100;
+  }
+  if(direction === "up" && this.y > -20){
+    this.y -= 84;
+  }
+  if(direction === "down" && this.y < 400){
+    this.y += 84;
+  }
+};
+
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
