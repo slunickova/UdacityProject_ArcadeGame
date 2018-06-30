@@ -1,3 +1,8 @@
+var playerScore = 0;
+var enemyScore = 0;
+document.getElementById("playerScore").innerHTML = playerScore;
+document.getElementById("enemyScore").innerHTML = enemyScore;
+
 // Enemies our player must avoid
 var Enemy = function(x, y, speed) {
     this.x = x;
@@ -29,6 +34,8 @@ Enemy.prototype.update = function(dt) {
         player.y < this.y + this.height &&
         player.height + player.y > this.y) {
         player.reset();
+        enemyScore ++;
+        document.getElementById("enemyScore").innerHTML = enemyScore;
         console.log("You loose!")
     }
 
@@ -53,6 +60,8 @@ var Player = function(x, y) {
 Player.prototype.update = function(dt) {
   if(this.y === -20){
     this.reset();
+    playerScore ++;
+    document.getElementById("playerScore").innerHTML = playerScore;;
     console.log("You won!");
   }
 
