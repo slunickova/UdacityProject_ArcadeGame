@@ -9,8 +9,8 @@ var Enemy = function(x, y, speed) {
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
     this.sprite = 'images/enemy-bug.png';
-    this.width = 101;
-    this.height = 171;
+    this.width = 90;
+    this.height = 65;
 };
 
 // Update the enemy's position, required method for game
@@ -22,7 +22,15 @@ Enemy.prototype.update = function(dt) {
     // all computers.
     if (this.x > 600){
       this.x = -100;
-    };
+    }
+
+    if (player.x < this.x + this.width &&
+        player.x + player.width > this.x &&
+        player.y < this.y + this.height &&
+        player.height + player.y > this.y) {
+        player.reset();
+        console.log("You loose!")
+    }
 
 };
 
@@ -38,8 +46,8 @@ var Player = function(x, y) {
     this.x = x;
     this.y = y;
     this.sprite = 'images/char-boy.png';
-    this.width = 101;
-    this.height = 171;
+    this.width = 65;
+    this.height = 75;
 };
 
 Player.prototype.update = function(dt) {
@@ -47,22 +55,13 @@ Player.prototype.update = function(dt) {
     this.reset();
     console.log("You won!");
   }
+
 };
 
 Player.prototype.reset = function(x,y) {
   this.x = 200;
   this.y = 400;
 }
-
-Player.prototype.checkCollisions = function() {
-    if (this.x < Enemy.x + Enemy.width &&
-      this.x + this.width > Enemy.x &&
-      this.y < Enemy.y + Enemy.height &&
-      this.height + this.y > Enemy.y) {
-        this.reset();
-        console.log("You loose!");
-    }
-};
 
 Player.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
