@@ -61,10 +61,9 @@ Player.prototype.update = function(dt) {
   if(this.y === -20){
     this.reset();
     playerScore ++;
-    document.getElementById("playerScore").innerHTML = playerScore;;
     console.log("You won!");
+    document.getElementById("playerScore").innerHTML = playerScore;
   }
-
 };
 
 Player.prototype.reset = function(x,y) {
